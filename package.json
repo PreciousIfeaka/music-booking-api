@@ -1,8 +1,8 @@
 {
   "name": "music-booking-api",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "A comprehensive music-booking API",
+  "author": "PreciousIfeaka",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

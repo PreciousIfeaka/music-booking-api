@@ -21,7 +21,7 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup("api/docs", app, document);
-  app.use('api/docs.json', (req: Request, res: Response) => {
+  app.use("docs.json", (req: Request, res: Response) => {
     (res as any).json(document);
   });
 
