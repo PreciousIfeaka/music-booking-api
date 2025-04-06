@@ -22,7 +22,7 @@ The **Music Booking API** is a robust backend service built using **NestJS**, al
 - **Stripe** (For payment processing)
 - **Swagger** (API documentation)
 ## Project File Structure
-
+```
 |--- src
 |    |--- database
 |    |--- filters
@@ -43,7 +43,7 @@ The **Music Booking API** is a robust backend service built using **NestJS**, al
 |--- package.json
 |--- tsconfig.json
 |--- tcsonfig.build.json
-
+```
 
 ## Prerequisites
 
