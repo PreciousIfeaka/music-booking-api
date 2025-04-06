@@ -6,7 +6,7 @@ import { Role } from "../users/entities/user";
 import { AuthSessionGuard } from "../../guards/auth.guard";
 import { RoleGuard } from "../../guards/role.guard";
 import { Roles } from "../../decorators/role.decorator";
-import { ApiBearerAuth } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiQuery } from "@nestjs/swagger";
 
 @ApiBearerAuth()
 @Controller("events")
@@ -24,13 +24,17 @@ export class EventController {
 
   @Get("/me")
   @Roles(Role.ORGANIZER)
+  @ApiQuery({ name: "page", required: false, type: Number, description: "Page number (default: 1)" })
+  @ApiQuery({ name: "limit", required: false, type: Number, description: "Number of results per page (default: 10)" })
   async retrieveOrganizersEvents(@Query("page") page: number, @Query("limit") limit: number, @Req() request) {
-    return this.eventService.retrieveAllEvents(page, limit, request.user.user_id, );
+    return this.eventService.retrieveAllEvents(page ?? 1, limit ?? 10, request.user.user_id, );
   }
 
   @Get()
+  @ApiQuery({ name: "page", required: false, type: Number, description: "Page number (default: 1)" })
+  @ApiQuery({ name: "limit", required: false, type: Number, description: "Number of results per page (default: 10)" })
   async retrieveAllEvents(@Query("page") page: number, @Query("limit") limit: number) {
-    return this.eventService.retrieveAllEvents(page, limit);
+    return this.eventService.retrieveAllEvents(page ?? 1, limit ?? 10);
   }
 
   @Get(":id")

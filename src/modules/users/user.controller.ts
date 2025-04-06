@@ -19,7 +19,7 @@ export class UserController {
   @Roles(Role.ADMIN)
   @ApiQuery({ name: "page", required: false, type: Number, description: "Page number (default: 1)" })
   @ApiQuery({ name: "limit", required: false, type: Number, description: "Number of results per page (default: 10)" })
-  async findAllUsers(@Query("page", new ParseIntPipe()) page?: number, @Query("limit", new ParseIntPipe()) limit?: number) {
+  async findAllUsers(@Query("page") page?: number, @Query("limit") limit?: number) {
     return await this.userService.getAllUsers(page ?? 1, limit ?? 10);
   }
 

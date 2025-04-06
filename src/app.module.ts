@@ -36,8 +36,8 @@ import { JwtModule } from '@nestjs/jwt';
       }),
       inject: [ConfigService]
     }),
-    UserModule,
     AuthModule,
+    UserModule,
     ArtistModule,
     EventModule,
     BookingModule,

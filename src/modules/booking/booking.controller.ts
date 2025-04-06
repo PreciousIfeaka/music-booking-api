@@ -4,7 +4,7 @@ import { CreateBookingDto } from "./dto/create-booking.dto";
 import { UpdateBookingStatusDto } from "./dto/update-booking.dto";
 import { AuthSessionGuard } from "../../guards/auth.guard";
 import { RoleGuard } from "../../guards/role.guard";
-import { ApiBearerAuth } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiQuery } from "@nestjs/swagger";
 import { Roles } from "../../decorators/role.decorator";
 import { Role } from "../users/entities/user";
 
@@ -24,12 +24,16 @@ export class BookingController {
 
   @Get("/me")
   @Roles(Role.ORGANIZER, Role.ADMIN)
+  @ApiQuery({ name: "page", required: false, type: Number, description: "Page number (default: 1)" })
+  @ApiQuery({ name: "limit", required: false, type: Number, description: "Number of results per page (default: 10)" })
   async retrieveOrganizerBookings(@Query("page") page: number, @Query("limit") limit: number, @Req() request) {
-    return this.bookingService.getAllBookings(page, limit, request.user.user_id);
+    return this.bookingService.getAllBookings(page ?? 1, limit ?? 10, request.user.user_id);
   }
 
   @Get()
   @Roles(Role.ORGANIZER, Role.ADMIN)
+  @ApiQuery({ name: "page", required: false, type: Number, description: "Page number (default: 1)" })
+  @ApiQuery({ name: "limit", required: false, type: Number, description: "Number of results per page (default: 10)" })
   async retrieveAllBookings(@Query("page") page: number, @Query("limit") limit: number) {
     return this.bookingService.getAllBookings(page, limit);
   }

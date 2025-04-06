@@ -19,6 +19,10 @@ export class EventService {
     event: Event
   }> {
     const { user } = await this.userService.findUser(user_id);
+
+    if (payload.event_date && new Date(payload.event_date) < new Date()) 
+      throw new BadRequestException("event_date cannot be in the past");
+
     const event = this.eventRepository.create({
       ...payload,
       organizer: user
@@ -55,21 +59,25 @@ export class EventService {
   }> {
     let events: Event[];
     let total: number;
+    let message: string;
+
     if (user_id) {
       [events, total] = await this.eventRepository.findAndCount({
         where: { organizer: { id: user_id }},
         take: limit,
         skip: (page - 1) * limit
       });
+      message = " Successfully retrieved events for the signed-in user";
     } else {
       [events, total] = await this.eventRepository.findAndCount({
         take: limit,
         skip: (page - 1) * limit
       });
+      message = "successfully retrieved all events";
     }
 
     return {
-      message: "Successfully retrieved events for this signed-in user",
+      message,
       events,
       meta: {
         total,
@@ -84,6 +92,9 @@ export class EventService {
     event: Event
   }> {
     const { event } = await this.findEventById(id);
+
+    if (payload.event_date && new Date(payload.event_date) < new Date()) 
+      throw new BadRequestException("event_date cannot be in the past");
     
     await this.eventRepository.update(event.id, payload);
 

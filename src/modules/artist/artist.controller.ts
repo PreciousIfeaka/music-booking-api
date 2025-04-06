@@ -17,7 +17,6 @@ export class ArtistController {
   ) {}
 
   @Post()
-  @Roles(Role.ARTIST, Role.ORGANIZER)
   @HttpCode(HttpStatus.CREATED)
   async createArtistProfile(@Body() body: CreateArtistProfileDto) {
     return await this.artistService.createArtistProfile(body);
@@ -25,8 +24,10 @@ export class ArtistController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
+  @ApiQuery({ name: "page", required: false, type: Number, description: "Page number (default: 1)" })
+  @ApiQuery({ name: "limit", required: false, type: Number, description: "Number of results per page (default: 10)" })
   async getAllArtistsProfiles(@Query("page") page: number, @Query("limit") limit: number) {
-    return await this.artistService.getAllArtistProfiles(page, limit);
+    return await this.artistService.getAllArtistProfiles(page ?? 1, limit ?? 10);
   }
 
   @Get("search")
@@ -67,7 +68,6 @@ export class ArtistController {
   }
 
   @Delete(":id")
-  @Roles(Role.ARTIST, Role.ADMIN)
   @HttpCode(HttpStatus.OK)
   async deleteArtistProfile(@Param("id", new ParseUUIDPipe()) id: string) {
     return await this.artistService.deleteArtistProfile(id);
